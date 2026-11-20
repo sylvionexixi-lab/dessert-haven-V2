@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dessert Haven — Cupcakes, cheesecakes & pastries</title>
+<style>
+:root{
+  --bg:#eef1f2;--ink:#17202a;--accent:#d9391f;--accent2:#f4a259;--muted:#5c6770;
+  --on-accent:#fff;--glass:rgba(0,0,0,.05);--line:rgba(0,0,0,.14);--ringtext:#8a2415;--shadowc:rgba(0,0,0,.35);
+  --font-d:'Bricolage Grotesque',system-ui,sans-serif;--font-b:'Inter',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg);scroll-behavior:auto}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-b);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+
+/* ---------- header ---------- */
+header{position:fixed;inset:0 0 auto 0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:18px 4vw;pointer-events:none}
+header>*{pointer-events:auto}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--font-d);font-weight:800;font-size:1.15rem;letter-spacing:-.01em}
+.logo{width:34px;height:34px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;font-style:normal;font-size:1rem}
+nav{display:flex;gap:6px;padding:5px;border-radius:99px;background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line)}
+nav a{padding:8px 16px;border-radius:99px;font-size:.82rem;font-weight:600;transition:.25s}
+nav a:hover{background:var(--ink);color:var(--bg)}
+.pill{padding:10px 20px;border-radius:99px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:.82rem;transition:transform .25s}
+.pill:hover{transform:scale(1.06)}
+#bar{position:fixed;top:0;left:0;height:3px;width:100%;background:var(--accent);transform-origin:0 50%;transform:scaleX(0);z-index:60}
+
+/* ---------- fixed layers ---------- */
+#bgfx{position:fixed;inset:0;z-index:1;overflow:hidden;pointer-events:none}
+.ring{position:absolute;left:50%;top:47%;width:min(150vw,150vh);aspect-ratio:1;will-change:transform,opacity}
+.ring svg{width:100%;height:100%;overflow:visible;display:block}
+.ring text{font-family:var(--font-d);font-weight:800;text-transform:uppercase;fill:var(--ringtext)}
+.words{position:absolute;left:0;top:50%;display:flex;will-change:transform;margin-top:-17vh}
+.words span{flex:none;width:100vw;text-align:center;font-family:var(--font-d);font-weight:800;text-transform:uppercase;line-height:1;letter-spacing:-.04em;color:transparent;-webkit-text-stroke:2px var(--wc,var(--accent));opacity:.9;white-space:nowrap}
+#stage{position:fixed;inset:0;z-index:2;pointer-events:none;overflow:hidden}
+.prod{position:absolute;left:50%;top:50%;width:0;height:0;perspective:1200px;will-change:transform,opacity}
+.rot{position:absolute;left:0;top:0;width:0;height:0;transform-style:preserve-3d}
+.grp{position:absolute;left:0;top:0;width:0;height:0;transform-style:preserve-3d}
+.face{position:absolute;backface-visibility:hidden;-webkit-backface-visibility:hidden;background-repeat:no-repeat}
+.face::after{content:"";position:absolute;inset:-.5px;background:#000;opacity:var(--sh,0)}
+.face::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,transparent,rgba(255,255,255,.95),transparent);opacity:var(--gl,0)}
+.disc{position:absolute;border-radius:50%;backface-visibility:hidden;background:radial-gradient(circle at 38% 34%,#f6f7f8,#b3b8be 60%,#868c94)}
+.layer{position:absolute;left:0;top:0;height:300px;width:auto;max-width:none;user-select:none;-webkit-user-drag:none}
+.shadow{position:absolute;left:50%;top:50%;width:230px;height:40px;margin:-20px 0 0 -115px;border-radius:50%;background:radial-gradient(closest-side,var(--shadowc),transparent);will-change:transform,opacity}
+
+/* ---------- content ---------- */
+main{position:relative;z-index:3}
+.sticky{position:sticky;top:0;height:100vh;overflow:hidden;pointer-events:none;z-index:3}
+.eyebrow{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--accent)}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 26px;border-radius:99px;background:var(--ink);color:var(--bg);font-weight:700;font-size:.9rem;pointer-events:auto;transition:transform .25s,background .25s}
+.btn:hover{transform:translateY(-2px) scale(1.03);background:var(--accent);color:var(--on-accent)}
+.btn.alt{background:var(--accent);color:var(--on-accent)}
+.btn.alt:hover{background:var(--ink);color:var(--bg)}
+
+#top{position:relative}
+.hero-in{position:absolute;inset:0;padding:0 5vw;pointer-events:none}
+.h-left{position:absolute;left:5vw;bottom:8vh;max-width:min(40vw,620px)}
+.h-left h1{font-family:var(--font-d);font-weight:800;font-size:clamp(2.2rem,4.6vw,4.8rem);line-height:.92;letter-spacing:-.045em;margin-top:14px}
+.h-right{position:absolute;right:5vw;bottom:9vh;max-width:300px;display:flex;flex-direction:column;gap:18px;align-items:flex-start}
+.h-right p{color:var(--muted);font-size:.98rem;line-height:1.55}
+.hint{position:absolute;left:50%;bottom:2.4vh;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:var(--muted)}
+.hint i{width:1px;height:34px;background:linear-gradient(var(--ink),transparent);animation:drip 1.8s infinite}
+@keyframes drip{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+.fb{position:absolute;top:50%;width:min(36vw,480px);transform:translateY(-50%)}
+.fb.side0{left:5vw}.fb.side1{right:5vw}
+.fb-in{will-change:transform,opacity}
+.fb-idx{display:flex;align-items:center;gap:12px;font-size:.72rem;font-weight:700;letter-spacing:.2em;color:var(--muted);margin-bottom:10px}
+.fb-idx i{display:block;width:46px;height:1px;background:var(--muted)}
+.num{font-family:var(--font-d);font-weight:800;font-size:clamp(5.5rem,13vw,11.5rem);line-height:.88;letter-spacing:-.05em;display:flex;align-items:flex-start}
+.num em{font-style:normal;font-size:.38em;color:var(--accent);margin:.12em 0 0 .06em;letter-spacing:0}
+.fb h3{font-family:var(--font-d);font-weight:800;font-size:clamp(1.7rem,3vw,2.8rem);line-height:1;letter-spacing:-.03em;margin:14px 0 14px}
+.fb p{color:var(--muted);line-height:1.6;font-size:1rem;max-width:380px}
+
+.coll-head{position:absolute;top:13vh;left:0;right:0;text-align:center}
+.coll-head h2{font-family:var(--font-d);font-weight:800;font-size:clamp(1.8rem,3.4vw,3.2rem);letter-spacing:-.035em;margin-top:8px}
+.coll-info{position:absolute;left:0;right:0;bottom:7vh;height:190px}
+.ci{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px}
+.ci h3{font-family:var(--font-d);font-weight:800;font-size:clamp(1.8rem,3.2vw,3rem);letter-spacing:-.035em;line-height:1}
+.ci p{color:var(--muted);font-size:1rem}
+.ci .row{display:flex;gap:16px;align-items:center;margin-top:12px}
+.price{font-family:var(--font-d);font-weight:800;font-size:1.4rem}
+.arrow{position:absolute;top:50%;width:54px;height:54px;border-radius:50%;border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(10px);font-size:1.4rem;pointer-events:auto;transition:.25s;transform:translateY(-50%)}
+.arrow:hover{background:var(--accent);color:var(--on-accent);border-color:transparent}
+.arrow.prev{left:3vw}.arrow.next{right:3vw}
+.dots{position:absolute;right:3vw;bottom:8vh;display:flex;flex-direction:column;gap:10px;pointer-events:auto}
+.dots button{width:10px;height:10px;border-radius:50%;background:var(--ink);opacity:.25;transition:.3s}
+.dots button.on{opacity:1;transform:scale(1.5);background:var(--accent)}
+
+#shop{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:14vh 6vw 8vh;gap:26px;overflow:hidden}
+#shop::before{content:"";position:absolute;width:90vmin;height:90vmin;border-radius:50%;background:radial-gradient(closest-side,var(--accent),transparent 72%);opacity:.22;left:50%;top:44%;transform:translate(-50%,-50%);z-index:-1}
+#shop h2{font-family:var(--font-d);font-weight:800;font-size:clamp(3rem,10vw,9rem);line-height:.9;letter-spacing:-.055em;max-width:14ch}
+#shop p{max-width:480px;color:var(--muted);line-height:1.6}
+#shop footer{position:absolute;bottom:3vh;font-size:.78rem;color:var(--muted)}
+
+/* ---------- mobile ---------- */
+@media (max-width:820px){
+  nav{display:none}
+  .h-left{left:6vw;right:6vw;bottom:19vh;max-width:none}
+  .h-left h1{font-size:clamp(2.3rem,11vw,3.6rem)}
+  .h-right{left:6vw;right:6vw;bottom:5vh;max-width:none;flex-direction:row;align-items:center;justify-content:space-between;gap:14px}
+  .h-right p{display:none}
+  .hint{display:none}
+  .fb{left:6vw!important;right:6vw!important;width:auto;top:auto;bottom:6vh;transform:none}
+  .num{font-size:clamp(4.2rem,22vw,6.5rem)}
+  .fb h3{font-size:1.6rem;margin:8px 0}
+  .fb p{font-size:.9rem}
+  .coll-head{top:11vh}
+  .arrow{top:auto;bottom:calc(7vh + 120px);width:44px;height:44px}
+  .arrow.prev{left:4vw}.arrow.next{right:4vw}
+  .dots{flex-direction:row;right:auto;left:50%;bottom:2.4vh;transform:translateX(-50%)}
+}
+@media (prefers-reduced-motion:reduce){.hint i{animation:none}}
+
+/* ---------- customizer ---------- */
+#panel{font-family:system-ui,-apple-system,'Segoe UI',sans-serif}
+.pn-toggle{position:fixed;left:16px;bottom:16px;z-index:100;padding:12px 18px;border-radius:99px;background:#111;color:#fff;font-weight:700;font-size:.85rem;box-shadow:0 8px 30px rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.18)}
+.pn-box{position:fixed;left:16px;bottom:70px;z-index:100;width:360px;max-height:calc(100vh - 100px);overflow:auto;background:rgba(18,18,22,.96);color:#eee;border:1px solid rgba(255,255,255,.14);border-radius:18px;box-shadow:0 24px 70px rgba(0,0,0,.5);padding:6px 14px 16px;display:none;backdrop-filter:blur(16px);font-size:13px;line-height:1.35}
+.pn-box.open{display:block}
+.pn-box h4{font-size:15px;margin:12px 0 2px}
+.pn-box small{color:#9a9aa5;display:block;margin-bottom:6px}
+.pn-box details{border-bottom:1px solid rgba(255,255,255,.1);padding:8px 0}
+.pn-box summary{cursor:pointer;font-weight:700;padding:4px 0;list-style:none;display:flex;justify-content:space-between}
+.pn-box summary::after{content:"+";opacity:.6}
+.pn-box details[open]>summary::after{content:"–"}
+.pn-f{display:flex;flex-direction:column;gap:4px;margin:8px 0}
+.pn-f>span{font-size:11px;color:#a8a8b3;text-transform:uppercase;letter-spacing:.06em}
+.pn-box input[type=text],.pn-box input[type=number],.pn-box textarea,.pn-box select{width:100%;background:#25252c;color:#fff;border:1px solid rgba(255,255,255,.14);border-radius:8px;padding:8px 10px;font:inherit}
+.pn-box textarea{min-height:58px;resize:vertical}
+.pn-box input[type=color]{width:100%;height:34px;border:1px solid rgba(255,255,255,.14);border-radius:8px;background:#25252c;padding:2px}
+.pn-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pn-row3{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:6px}
+.pn-card{border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:4px 10px 10px;margin:10px 0;background:rgba(255,255,255,.03)}
+.pn-btn{padding:8px 12px;border-radius:8px;background:#2b2b34;color:#fff;border:1px solid rgba(255,255,255,.14);font-weight:600;font-size:12px}
+.pn-btn:hover{background:#3a3a46}
+.pn-btn.pri{background:#ff5a1f;border-color:transparent}
+.pn-btn.dng{color:#ff8a8a}
+.pn-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.pn-preset{height:34px;border-radius:8px;border:2px solid transparent;cursor:pointer;display:flex;overflow:hidden;padding:0}
+.pn-preset:hover{border-color:#fff}
+.pn-preset i{flex:1}
+.pn-thumb{width:100%;height:70px;border-radius:8px;border:1px dashed rgba(255,255,255,.25);background:#25252c center/contain no-repeat;display:grid;place-items:center;color:#777;font-size:11px}
+.pn-chk{display:flex;gap:8px;align-items:center;margin-top:10px}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:200;background:#111;color:#fff;padding:12px 18px;border-radius:12px;font:600 13px system-ui;box-shadow:0 10px 40px rgba(0,0,0,.4);opacity:0;transition:.3s;pointer-events:none;max-width:90vw;text-align:center}
+#toast.on{opacity:1}
+@media (max-width:560px){.pn-box{left:8px;right:8px;width:auto;bottom:64px}.pn-toggle{left:8px;bottom:8px}}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+<div id="app"></div>
+<div id="panel"></div>
+<div id="toast"></div>
+
+<script id="main-script">
+/* =====================================================================
+   ✦ EDIT ME  —  everything you may want to change lives in CONFIG below.
+   (You can also use the ✦ Customize panel on the page, then press
+   "Download my site" to save a new HTML file with your changes baked in.)
+
+   • topic / brand / texts ........ plain strings
+   • palette ...................... hex colours only (#rrggbb)
+   • products[].image ............. paste an image URL, a data: URL, or leave ""
+                                    and upload from the Customize panel.
+        shape "jar"/"can"  → your picture is wrapped around the 3D body as a label
+        shape "box"        → your picture becomes the front + back of a 3D box
+        shape "cutout"     → use a PNG with transparent background (shoe, watch,
+                              bottle…); it is stacked into a 3D slab that spins.
+   • features[] ................... the counting-number scenes while you scroll
+   ===================================================================== */
+/*CONFIG_START*/
+const CONFIG = {
+  "brand": "Dessert Haven",
+  "topic": "Cupcakes, cheesecakes & pastries",
+  "shopLabel": "Order now",
+  "nav": [
+    "Story",
+    "Desserts",
+    "Order"
+  ],
+  "hero": {
+    "ringText": "Bake · Share · Savor ·",
+    "headline": "Sweet things, made to be shared.",
+    "sub": "Small-batch cupcakes, cheesecakes and pastries baked fresh every morning and finished by hand.",
+    "cta": "Meet the desserts",
+    "scrollHint": "Scroll to taste"
+  },
+  "palette": {
+    "bg": "#fff3ea",
+    "ink": "#3a1d1a",
+    "accent": "#e5446d",
+    "accent2": "#f2a65a",
+    "muted": "#8b6b66"
+  },
+  "fonts": {
+    "display": "Fraunces",
+    "body": "Inter"
+  },
+  "products": [
+    {
+      "name": "Almond Crunch",
+      "sub": "Chocolate almond cupcake",
+      "price": "₱120",
+      "color": "#8a5636",
+      "shape": "cutout",
+      "image": "data:image/webp;base64,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
